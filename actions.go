@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"github.com/Invoiced/go-instagram/instagram"
 	"github.com/codegangsta/cli"
-	"io/ioutil"
 	"log"
+	"os"
 )
 
 func userIsFollowing(u instagram.User, followers []instagram.User) bool {
@@ -18,64 +18,64 @@ func userIsFollowing(u instagram.User, followers []instagram.User) bool {
 	return false
 }
 
+func getNonFollowers(ref, f []instagram.User) []instagram.User {
+	// Reuse slice
+	notFollowing := ref[:0]
+	for _, u := range ref {
+		if !userIsFollowing(u, f) {
+			notFollowing = append(notFollowing, u)
+		}
+	}
+	return notFollowing
+}
+
+func printUsers(users []instagram.User) int {
+	var total int
+	for _, u := range users {
+		total++
+		fmt.Printf("%s (%s)\n", u.Username, u.FullName)
+	}
+	fmt.Printf("Total: %v\n", total)
+	return total
+}
+
 func FollowsBack(c *cli.Context) {
 	following, _, err := client.Relationships.Follows("")
 	failOnError(err)
-
 	followers, _, err := client.Relationships.FollowedBy("")
 	failOnError(err)
 
-	var total int
 	fmt.Println("Users who are not following you back:")
-
-	for _, u := range following {
-		if !userIsFollowing(u, followers) {
-			total++
-			fmt.Printf("%s (%s)\n", u.Username, u.FullName)
-		}
-	}
-
-	fmt.Printf("Total: %v", total)
+	u := getNonFollowers(following, followers)
+	_ = printUsers(u)
 }
 
 func Followers(c *cli.Context) {
 	followers, _, err := client.Relationships.FollowedBy("")
 	failOnError(err)
 
-	var total int
 	fmt.Println("Users who are following you:")
-
-	for _, u := range followers {
-		total++
-		fmt.Printf("%s (%s)\n", u.Username, u.FullName)
-	}
-
-	fmt.Printf("Total: %v", total)
+	_ = printUsers(followers)
 }
 
 func Following(c *cli.Context) {
 	following, _, err := client.Relationships.Follows("")
 	failOnError(err)
 
-	var total int
 	fmt.Println("Users who you are following:")
-
-	for _, u := range following {
-		total++
-		fmt.Printf("%s (%s)\n", u.Username, u.FullName)
-	}
-
-	fmt.Printf("Total: %v", total)
+	_ = printUsers(following)
 }
 
 func Unfollowed(c *cli.Context) {
 	// Load history
-	f, err := ioutil.ReadFile(followersFile)
+	f, err := os.Open(followersFile)
+	defer f.Close()
+
 	var history []instagram.User
 
 	// Not running for the first time
 	if err == nil {
-		err = json.Unmarshal(f, &history)
+		err = json.NewDecoder(f).Decode(&history)
 		failOnError(err)
 	} else {
 		log.Println(err)
@@ -86,24 +86,22 @@ func Unfollowed(c *cli.Context) {
 	followers, _, err := client.Relationships.FollowedBy("")
 	failOnError(err)
 
-	var total int
+	fs, err := f.Stat()
+	failOnError(err)
+
+	fmt.Printf("Last modified: %v\n", fs.ModTime())
 	fmt.Println("Users who have unfollowed you (since you last ran the command):")
 
 	// Match history with current followers
-	for _, u := range history {
-		if !userIsFollowing(u, followers) {
-			total++
-			fmt.Printf("%s (%s)\n", u.Username, u.FullName)
-		}
-	}
-
-	fmt.Printf("Total: %v", total)
+	u := getNonFollowers(history, followers)
+	total := printUsers(u)
 
 	// Save current followers for future reference
 	if total != 0 {
 		d, err := json.Marshal(followers)
 		failOnError(err)
-		err = ioutil.WriteFile(followersFile, d, 0644)
+		_, err = f.Write(d)
 		failOnError(err)
+		f.Sync()
 	}
 }

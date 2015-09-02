@@ -29,7 +29,7 @@ func LoadConfig(fn string) (Configuration, error) {
 	c := Configuration{}
 
 	if _, err := os.Stat(fn); os.IsNotExist(err) {
-		err = errors.New(fmt.Sprintf("The configuration file (\"%s\") cannot be found.", fn))
+		err = errors.New(fmt.Sprintf("The configuration file (\"%s\") cannot be found.\n", fn))
 		return c, err
 	}
 
