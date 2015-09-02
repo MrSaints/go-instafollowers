@@ -97,7 +97,7 @@ func main() {
 	app := cli.NewApp()
 	app.Name = "go-instafollowers"
 	app.Usage = "Manage your Instagram followers"
-	app.Version = "1.0.0"
+	app.Version = "1.2.0"
 	app.Commands = commands
 	app.Run(os.Args)
 }
