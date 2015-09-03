@@ -28,11 +28,6 @@ type Configuration struct {
 func LoadConfig(fn string) (Configuration, error) {
 	c := Configuration{}
 
-	if _, err := os.Stat(fn); os.IsNotExist(err) {
-		err = errors.New(fmt.Sprintf("The configuration file (\"%s\") cannot be found.\n", fn))
-		return c, err
-	}
-
 	f, err := os.Open(fn)
 	defer f.Close()
 
@@ -51,6 +46,11 @@ func LoadConfig(fn string) (Configuration, error) {
 
 func main() {
 	// Load config
+	if _, err := os.Stat(configFile); os.IsNotExist(err) {
+		err = errors.New(fmt.Sprintf("The configuration file (\"%s\") cannot be found.\n", configFile))
+		failOnError(err)
+	}
+
 	config, err := LoadConfig(configFile)
 	failOnError(err)
 
