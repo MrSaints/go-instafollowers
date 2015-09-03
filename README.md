@@ -1,6 +1,6 @@
 # go-instafollowers
 
-A simple Go CLI app for managing your Instagram followers.
+A simple Go CLI app for managing your Instagram followers, and for generating access tokens.
 
 
 ## Features

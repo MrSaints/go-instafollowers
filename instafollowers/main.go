@@ -72,7 +72,7 @@ func main() {
 	app.Name = "go-instafollowers"
 	app.Authors = []cli.Author{cli.Author{"Ian Lai", "os@fyianlai.com"}}
 	app.Usage = "Manage your Instagram followers"
-	app.Version = "1.3.0"
+	app.Version = "1.4.0"
 	app.Commands = commands
 	app.Run(os.Args)
 }
