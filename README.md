@@ -70,30 +70,30 @@ Run the app without any arguments to see the usage information.
 
 ## Access Token
 
-To obtain your access token (for individual / private use), you can generate it using the [`instatoken/`][instatoken] web app included in this package.
+To obtain your access token (for individual / private use), you can safely generate _(server-side explicit flow)_ it using the [`instatoken/`][instatoken] web app included in this package.
 
 ### Go command
 
 First, ensure you are in the [`instatoken/`][instatoken] directory. Now, compile, and run:
 
-    ```
-    go build && ./instatoken
-    ```
+```shell
+go build && ./instatoken
+```
 
 ### Pre-built binary
 
 Alternatively, you can execute the pre-built [amd64][] binary:
 
-    ```shell
-    ./bin/instatoken
-    ```
+```shell
+./bin/instatoken
+```
 
 The above command assumes that you are in the [root][] directory.
 
 Now, navigate to [http://localhost:8080](http://localhost:8080), and follow the generated link.
 
 
-[source]: https://github.com/MrSaints/go-steamwebapi/archive/master.zip
+[source]: https://github.com/MrSaints/go-instafollowers/archive/master.zip
 [amd64]: https://github.com/MrSaints/go-instafollowers/tree/master/bin
 [root]: https://github.com/MrSaints/go-instafollowers
 [main]: https://github.com/MrSaints/go-instafollowers/tree/master/instafollowers
