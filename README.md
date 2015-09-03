@@ -28,9 +28,11 @@ Alternatively, you can download the [source][].
 
 ## Usage
 
-You can either run the app through the Go command or by executing the pre-built [amd64][] binary. Ensure you are in the project / app directory before proceeding with the commands below.
+You can either run the app through the Go command or by executing the pre-built [amd64][] binary.
 
 ### Go command
+
+Ensure you are in the main project / app directory (i.e. [`instafollowers/`][main]) before proceeding with the commands below.
 
 - Via `go run`:
 
@@ -46,6 +48,8 @@ You can either run the app through the Go command or by executing the pre-built 
 
 ### Pre-built binary
 
+In the root directory (i.e. where the `LICENSE` is), run:
+
 ```shell
 ./bin/go-instafollowers
 ```
@@ -55,3 +59,4 @@ Run the app without any arguments to see the usage information.
 
 [source]: https://github.com/MrSaints/go-steamwebapi/archive/master.zip
 [amd64]: https://github.com/MrSaints/go-instafollowers/tree/master/bin
+[main]: https://github.com/MrSaints/go-instafollowers/tree/master/instafollowers
