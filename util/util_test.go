@@ -1,12 +1,17 @@
-package main
+package util
 
 import (
 	"os"
 	"testing"
 )
 
+const (
+	testFile = "config_test.json"
+	fakeFile = "nonexistent.json"
+)
+
 func TestLoadConfig(t *testing.T) {
-	c, err := LoadConfig("config_test.json")
+	c, err := LoadConfig(testFile)
 	if err != nil {
 		t.Fatalf("LoadConfig returned unexpected error: %v", err)
 	}
@@ -22,7 +27,7 @@ func TestLoadConfig(t *testing.T) {
 }
 
 func TestLoadConfig_noFile(t *testing.T) {
-	_, err := LoadConfig("nonexistent.json")
+	_, err := LoadConfig(fakeFile)
 	if err == nil {
 		t.Errorf("Expected error to be returned")
 	}

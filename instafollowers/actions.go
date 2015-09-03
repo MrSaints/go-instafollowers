@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/Invoiced/go-instagram/instagram"
 	"github.com/codegangsta/cli"
+	"github.com/mrsaints/go-instafollowers/util"
 	"log"
 	"os"
 )
@@ -41,9 +42,9 @@ func printUsers(users []instagram.User) int {
 
 func FollowsBack(c *cli.Context) {
 	following, _, err := client.Relationships.Follows("")
-	failOnError(err)
+	util.FailOnError(err)
 	followers, _, err := client.Relationships.FollowedBy("")
-	failOnError(err)
+	util.FailOnError(err)
 
 	fmt.Println("Users who are not following you back:")
 	u := getNonFollowers(following, followers)
@@ -52,7 +53,7 @@ func FollowsBack(c *cli.Context) {
 
 func Followers(c *cli.Context) {
 	followers, _, err := client.Relationships.FollowedBy("")
-	failOnError(err)
+	util.FailOnError(err)
 
 	fmt.Println("Users who are following you:")
 	_ = printUsers(followers)
@@ -60,7 +61,7 @@ func Followers(c *cli.Context) {
 
 func Following(c *cli.Context) {
 	following, _, err := client.Relationships.Follows("")
-	failOnError(err)
+	util.FailOnError(err)
 
 	fmt.Println("Users who you are following:")
 	_ = printUsers(following)
@@ -76,7 +77,7 @@ func Unfollowed(c *cli.Context) {
 	// Not running for the first time
 	if err == nil {
 		err = json.NewDecoder(f).Decode(&history)
-		failOnError(err)
+		util.FailOnError(err)
 	} else {
 		log.Println(err)
 		log.Println("Running the command for the first time. You should have received a \"no such file or directory\" error.")
@@ -84,10 +85,10 @@ func Unfollowed(c *cli.Context) {
 
 	// Load current followers
 	followers, _, err := client.Relationships.FollowedBy("")
-	failOnError(err)
+	util.FailOnError(err)
 
 	fs, err := f.Stat()
-	failOnError(err)
+	util.FailOnError(err)
 
 	fmt.Printf("Last modified: %v\n", fs.ModTime())
 	fmt.Println("Users who have unfollowed you (since you last ran the command):")
@@ -99,9 +100,9 @@ func Unfollowed(c *cli.Context) {
 	// Save current followers for future reference
 	if total != 0 {
 		d, err := json.Marshal(followers)
-		failOnError(err)
+		util.FailOnError(err)
 		_, err = f.Write(d)
-		failOnError(err)
+		util.FailOnError(err)
 		f.Sync()
 	}
 }

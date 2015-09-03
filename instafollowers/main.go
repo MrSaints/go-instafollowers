@@ -1,12 +1,11 @@
 package main
 
 import (
-	"encoding/json"
 	"errors"
 	"fmt"
 	"github.com/Invoiced/go-instagram/instagram"
 	"github.com/codegangsta/cli"
-	"log"
+	"github.com/mrsaints/go-instafollowers/util"
 	"os"
 )
 
@@ -19,44 +18,19 @@ var (
 	client *instagram.Client
 )
 
-type Configuration struct {
-	ClientID     string `json:"client_id"`
-	ClientSecret string `json:"client_secret"`
-	AccessToken  string `json:"access_token"`
-}
-
-func LoadConfig(fn string) (Configuration, error) {
-	c := Configuration{}
-
-	f, err := os.Open(fn)
-	defer f.Close()
-
-	if err != nil {
-		return c, err
-	}
-
-	err = json.NewDecoder(f).Decode(&c)
-
-	if err != nil {
-		return c, err
-	}
-
-	return c, nil
-}
-
 func main() {
 	// Load config
 	if _, err := os.Stat(configFile); os.IsNotExist(err) {
 		err = errors.New(fmt.Sprintf("The configuration file (\"%s\") cannot be found.\n", configFile))
-		failOnError(err)
+		util.FailOnError(err)
 	}
 
-	config, err := LoadConfig(configFile)
-	failOnError(err)
+	config, err := util.LoadConfig(configFile)
+	util.FailOnError(err)
 
 	if config.AccessToken == "" {
 		err = errors.New(fmt.Sprintf("This app requires an authenticated user. Please set your `access_token` config in \"%v\".\n", configFile))
-		failOnError(err)
+		util.FailOnError(err)
 	}
 
 	// Create an Instagram client
@@ -101,11 +75,4 @@ func main() {
 	app.Version = "1.3.0"
 	app.Commands = commands
 	app.Run(os.Args)
-}
-
-func failOnError(err error) {
-	if err != nil {
-		log.Fatal(err)
-		panic(err)
-	}
 }
