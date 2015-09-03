@@ -46,7 +46,7 @@ You can either run the app through the Go command or by executing the pre-built 
 
 ### Pre-built binary
 
-```
+```shell
 ./bin/go-instafollowers
 ```
 
