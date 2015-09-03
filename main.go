@@ -54,8 +54,8 @@ func main() {
 	config, err := LoadConfig(configFile)
 	failOnError(err)
 
-	if config.ClientID == "" || config.ClientSecret == "" {
-		err = errors.New(fmt.Sprintf("Please set your `client_id` and `client_secret` config in \"%v\".\n", configFile))
+	if config.AccessToken == "" {
+		err = errors.New(fmt.Sprintf("This app requires an authenticated user. Please set your `access_token` config in \"%v\".\n", configFile))
 		failOnError(err)
 	}
 
@@ -98,7 +98,7 @@ func main() {
 	app.Name = "go-instafollowers"
 	app.Authors = []cli.Author{cli.Author{"Ian Lai", "os@fyianlai.com"}}
 	app.Usage = "Manage your Instagram followers"
-	app.Version = "1.2.0"
+	app.Version = "1.3.0"
 	app.Commands = commands
 	app.Run(os.Args)
 }
