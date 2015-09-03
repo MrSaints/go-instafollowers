@@ -69,10 +69,10 @@ func main() {
 
 	// Create CLI
 	app := cli.NewApp()
-	app.Name = "go-instafollowers"
+	app.Name = "instafollowers"
 	app.Authors = []cli.Author{cli.Author{"Ian Lai", "os@fyianlai.com"}}
 	app.Usage = "Manage your Instagram followers"
-	app.Version = "1.4.0"
+	app.Version = "1.4.1"
 	app.Commands = commands
 	app.Run(os.Args)
 }
