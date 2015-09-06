@@ -6,6 +6,7 @@ import (
 	"github.com/Invoiced/go-instagram/instagram"
 	"github.com/codegangsta/cli"
 	"github.com/mrsaints/go-instafollowers/util"
+	"io/ioutil"
 	"log"
 	"os"
 )
@@ -70,27 +71,29 @@ func Following(c *cli.Context) {
 func Unfollowed(c *cli.Context) {
 	// Load history
 	f, err := os.Open(followersFile)
-	defer f.Close()
 
 	var history []instagram.User
+	var fs os.FileInfo
 
 	// Not running for the first time
 	if err == nil {
 		err = json.NewDecoder(f).Decode(&history)
 		util.FailOnError(err)
+
+		fs, err = f.Stat()
+		util.FailOnError(err)
+		fmt.Printf("Last modified: %v\n", fs.ModTime())
 	} else {
 		log.Println(err)
-		log.Println("Running the command for the first time. You should have received a \"no such file or directory\" error.")
+		log.Println("Running the command for the first time. You should have received a 'no such file or directory' error.")
 	}
+
+	defer f.Close()
 
 	// Load current followers
 	followers, _, err := client.Relationships.FollowedBy("")
 	util.FailOnError(err)
 
-	fs, err := f.Stat()
-	util.FailOnError(err)
-
-	fmt.Printf("Last modified: %v\n", fs.ModTime())
 	fmt.Println("Users who have unfollowed you (since you last ran the command):")
 
 	// Match history with current followers
@@ -98,11 +101,11 @@ func Unfollowed(c *cli.Context) {
 	total := printUsers(u)
 
 	// Save current followers for future reference
-	if total != 0 {
+	if fs == nil || total != 0 {
 		d, err := json.Marshal(followers)
 		util.FailOnError(err)
-		_, err = f.Write(d)
+
+		err = ioutil.WriteFile(followersFile, d, 0644)
 		util.FailOnError(err)
-		f.Sync()
 	}
 }
