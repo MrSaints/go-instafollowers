@@ -12,7 +12,7 @@ import (
 	"sort"
 )
 
-// Sort by name.
+// ByUsername implements sort.Interface for []instagram.User based on the Username field.
 type ByUsername []instagram.User
 
 func (m ByUsername) Len() int           { return len(m) }

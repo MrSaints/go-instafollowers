@@ -1,7 +1,6 @@
 package main
 
 import (
-	"errors"
 	"fmt"
 	"github.com/Invoiced/go-instagram/instagram"
 	"github.com/codegangsta/cli"
@@ -21,7 +20,7 @@ var (
 func main() {
 	// Load config
 	if _, err := os.Stat(configFile); os.IsNotExist(err) {
-		err = errors.New(fmt.Sprintf("The configuration file (\"%s\") cannot be found.\n", configFile))
+		err = fmt.Errorf("The configuration file ('%s') cannot be found.\n", configFile)
 		util.FailOnError(err)
 	}
 
@@ -29,7 +28,7 @@ func main() {
 	util.FailOnError(err)
 
 	if config.AccessToken == "" {
-		err = errors.New(fmt.Sprintf("This app requires an authenticated user. Please set your `access_token` config in \"%v\".\n", configFile))
+		err = fmt.Errorf("This app requires an authenticated user. Please set your `access_token` config in '%v'.\n", configFile)
 		util.FailOnError(err)
 	}
 
@@ -72,7 +71,7 @@ func main() {
 	app.Name = "instafollowers"
 	app.Authors = []cli.Author{cli.Author{"Ian Lai", "os@fyianlai.com"}}
 	app.Usage = "Manage your Instagram followers"
-	app.Version = "1.4.3"
+	app.Version = "1.4.4"
 	app.Commands = commands
 	app.Run(os.Args)
 }
