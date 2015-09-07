@@ -1,7 +1,6 @@
 package main
 
 import (
-	"errors"
 	"fmt"
 	"github.com/mrsaints/go-instafollowers/util"
 	"golang.org/x/oauth2"
@@ -9,10 +8,10 @@ import (
 )
 
 const (
-	SERVER_PORT         = ":8080"
-	REDIRECT_URL        = "http://localhost:8080/handshake"
-	INSTAGRAM_AUTH_URL  = "https://api.instagram.com/oauth/authorize"
-	INSTAGRAM_TOKEN_URL = "https://api.instagram.com/oauth/access_token"
+	serverPort        = ":8080"
+	redirectURL       = "http://localhost:8080/handshake"
+	instagramAuthURL  = "https://api.instagram.com/oauth/authorize"
+	instagramTokenURL = "https://api.instagram.com/oauth/access_token"
 )
 
 const (
@@ -46,22 +45,22 @@ func main() {
 	util.FailOnError(err)
 
 	if config.ClientID == "" || config.ClientSecret == "" {
-		err = errors.New(fmt.Sprintf("This app requires a registered API client. Please set your `client_id`, and `client_secret` config in \"%v\".\n", configFile))
+		err = fmt.Errorf("This app requires a registered API client. Please set your `client_id`, and `client_secret` config in '%v'.\n", configFile)
 		util.FailOnError(err)
 	}
 
 	igConf = &oauth2.Config{
 		ClientID:     config.ClientID,
 		ClientSecret: config.ClientSecret,
-		RedirectURL:  REDIRECT_URL,
+		RedirectURL:  redirectURL,
 		Endpoint: oauth2.Endpoint{
-			AuthURL:  INSTAGRAM_AUTH_URL,
-			TokenURL: INSTAGRAM_TOKEN_URL,
+			AuthURL:  instagramAuthURL,
+			TokenURL: instagramTokenURL,
 		},
 	}
 
 	http.HandleFunc("/", Home)
 	http.HandleFunc("/handshake", Handshake)
-	fmt.Printf("Listening and serving HTTP on %s\n", SERVER_PORT)
-	http.ListenAndServe(SERVER_PORT, nil)
+	fmt.Printf("Listening and serving HTTP on %s\n", serverPort)
+	http.ListenAndServe(serverPort, nil)
 }
