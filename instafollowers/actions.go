@@ -9,7 +9,15 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+	"sort"
 )
+
+// Sort by name.
+type ByUsername []instagram.User
+
+func (m ByUsername) Len() int           { return len(m) }
+func (m ByUsername) Swap(i, j int)      { m[i], m[j] = m[j], m[i] }
+func (m ByUsername) Less(i, j int) bool { return m[i].Username < m[j].Username }
 
 func userIsFollowing(u instagram.User, followers []instagram.User) bool {
 	for _, follower := range followers {
@@ -33,6 +41,7 @@ func getNonFollowers(ref, f []instagram.User) []instagram.User {
 
 func printUsers(users []instagram.User) int {
 	var total int
+	sort.Sort(ByUsername(users))
 	for _, u := range users {
 		total++
 		fmt.Printf("%s (%s)\n", u.Username, u.FullName)
