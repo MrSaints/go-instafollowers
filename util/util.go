@@ -16,11 +16,10 @@ func LoadConfig(fn string) (Configuration, error) {
 	c := Configuration{}
 
 	f, err := os.Open(fn)
-	defer f.Close()
-
 	if err != nil {
 		return c, err
 	}
+	defer f.Close()
 
 	err = json.NewDecoder(f).Decode(&c)
 
