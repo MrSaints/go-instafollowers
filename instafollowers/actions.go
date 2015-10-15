@@ -21,7 +21,7 @@ func (m ByUsername) Less(i, j int) bool { return m[i].Username < m[j].Username }
 
 func userIsFollowing(u instagram.User, followers []instagram.User) bool {
 	for _, follower := range followers {
-		if u == follower {
+		if u.ID == follower.ID {
 			return true
 		}
 	}
