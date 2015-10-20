@@ -57,7 +57,12 @@ func FollowsBack(c *cli.Context) {
 	util.FailOnError(err)
 
 	fmt.Println("Users who are not following you back:")
-	u := getNonFollowers(following, followers)
+	var u []instagram.User
+	if c.Bool("me") {
+		u = getNonFollowers(followers, following)
+	} else {
+		u = getNonFollowers(following, followers)
+	}
 	_ = printUsers(u)
 }
 

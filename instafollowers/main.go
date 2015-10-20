@@ -56,7 +56,10 @@ func main() {
 			Name:    "FollowsBack",
 			Aliases: []string{"fb"},
 			Usage:   "Returns a list of users who are not following you back",
-			Action:  FollowsBack,
+			Flags: []cli.Flag{
+				cli.BoolFlag{Name: "me", Usage: "Returns a list of users YOU are not following back"},
+			},
+			Action: FollowsBack,
 		},
 		{
 			Name:    "Unfollowed",
@@ -71,7 +74,7 @@ func main() {
 	app.Name = "instafollowers"
 	app.Authors = []cli.Author{cli.Author{"Ian Lai", "os@fyianlai.com"}}
 	app.Usage = "Manage your Instagram followers"
-	app.Version = "1.4.5"
+	app.Version = "1.4.6"
 	app.Commands = commands
 	app.Run(os.Args)
 }
