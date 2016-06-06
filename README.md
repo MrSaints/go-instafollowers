@@ -1,6 +1,10 @@
 # go-instafollowers
 
-A simple Go CLI app for managing your Instagram followers, and for generating access tokens.
+A simple Go CLI app for managing your [Instagram][instagram] followers, and for generating access tokens.
+
+---
+
+**Attention:** [As of June 1, 2016][fuckinstagram], this CLI app is UNLIKELY TO WORK because Instagram introduced a new `follower_list` OAuth 2.0 login / scope permission that WILL NOT WORK for apps in [Sandbox Mode][sandbox]. This is unless of course, if you have an app with approved permissions. But let us be honest, you are probably not going to get it just for the sole purpose of using this CLI app, and they probably do not care about you.
 
 
 ## Features
@@ -99,3 +103,6 @@ Now, navigate to [http://localhost:8080](http://localhost:8080), and follow the 
 [main]: https://github.com/MrSaints/go-instafollowers/tree/master/instafollowers
 [instatoken]: https://github.com/MrSaints/go-instafollowers/tree/master/instatoken
 [register]: https://instagram.com/developer/clients/manage/
+[instagram]: https://www.instagram.com/
+[fuckinstagram]: https://www.instagram.com/developer/review/
+[sandbox]: https://www.instagram.com/developer/sandbox/

@@ -57,6 +57,14 @@ func main() {
 			AuthURL:  instagramAuthURL,
 			TokenURL: instagramTokenURL,
 		},
+		Scopes: []string{
+			"basic",
+			"public_content",
+			"follower_list",
+			"comments",
+			"relationships",
+			"likes",
+		},
 	}
 
 	http.HandleFunc("/", Home)
